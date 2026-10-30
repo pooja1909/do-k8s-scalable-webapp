@@ -1,0 +1,58 @@
+{
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": {
+        "annotations": {
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"v1\",\"kind\":\"Service\",\"metadata\":{\"annotations\":{\"service.beta.kubernetes.io/do-loadbalancer-name\":\"web-app-lb\",\"service.beta.kubernetes.io/do-loadbalancer-protocol\":\"tcp\",\"service.beta.kubernetes.io/do-loadbalancer-type\":\"REGIONAL_NETWORK\"},\"name\":\"web-app\",\"namespace\":\"web-app\"},\"spec\":{\"ports\":[{\"name\":\"http\",\"port\":80,\"targetPort\":\"http\"}],\"selector\":{\"app\":\"web-app\"},\"type\":\"LoadBalancer\"}}\n",
+            "kubernetes.digitalocean.com/load-balancer-id": "07e0ac18-4fbf-4d0a-b2b8-6030a88ee39a",
+            "service.beta.kubernetes.io/do-loadbalancer-name": "web-app-lb",
+            "service.beta.kubernetes.io/do-loadbalancer-protocol": "tcp",
+            "service.beta.kubernetes.io/do-loadbalancer-type": "REGIONAL_NETWORK"
+        },
+        "creationTimestamp": "2026-10-29T18:23:49Z",
+        "finalizers": [
+            "service.kubernetes.io/load-balancer-cleanup"
+        ],
+        "name": "web-app",
+        "namespace": "web-app",
+        "resourceVersion": "582362",
+        "uid": "59a975a7-94d8-49cd-9369-9e19524e4669"
+    },
+    "spec": {
+        "allocateLoadBalancerNodePorts": true,
+        "clusterIP": "10.124.44.173",
+        "clusterIPs": [
+            "10.124.44.173"
+        ],
+        "externalTrafficPolicy": "Cluster",
+        "internalTrafficPolicy": "Cluster",
+        "ipFamilies": [
+            "IPv4"
+        ],
+        "ipFamilyPolicy": "SingleStack",
+        "ports": [
+            {
+                "name": "http",
+                "nodePort": 30751,
+                "port": 80,
+                "protocol": "TCP",
+                "targetPort": "http"
+            }
+        ],
+        "selector": {
+            "app": "web-app"
+        },
+        "sessionAffinity": "None",
+        "type": "LoadBalancer"
+    },
+    "status": {
+        "loadBalancer": {
+            "ingress": [
+                {
+                    "ip": "137.184.244.5",
+                    "ipMode": "VIP"
+                }
+            ]
+        }
+    }
+}

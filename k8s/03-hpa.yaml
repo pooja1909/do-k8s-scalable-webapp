@@ -10,8 +10,8 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: web-app
-  minReplicas: 2                   # never fewer than 2, for availability
-  maxReplicas: 10                  # cost guardrail: caps spend during a traffic spike
+  minReplicas: 2                   # controller target minimum, not an availability guarantee
+  maxReplicas: 10                  # bounds desired pod count, not the total bill
   metrics:
     - type: Resource
       resource:

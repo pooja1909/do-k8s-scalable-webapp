@@ -1,0 +1,3 @@
+NAME                       CPU(cores)   MEMORY(bytes)   
+web-app-57db579ccc-gklzn   8m           11Mi            
+web-app-57db579ccc-zvmfm   13m          9Mi             

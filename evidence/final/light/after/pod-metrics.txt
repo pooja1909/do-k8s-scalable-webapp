@@ -1,0 +1,6 @@
+NAME                       CPU(cores)   MEMORY(bytes)   
+web-app-57db579ccc-2f4sh   7m           9Mi             
+web-app-57db579ccc-542rj   17m          11Mi            
+web-app-57db579ccc-7qmtc   2m           11Mi            
+web-app-57db579ccc-mkj9h   11m          22Mi            
+web-app-57db579ccc-qbddh   15m          20Mi            

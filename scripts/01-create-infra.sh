@@ -8,12 +8,20 @@ set -euo pipefail
 source "$(dirname "$0")/config.env"
 
 echo "==> Creating container registry '$REGISTRY_NAME' (Starter plan, free: 1 repo, 500 MiB)"
-doctl registry create "$REGISTRY_NAME" --subscription-tier starter --region "$REGION" || \
-  echo "    (registry may already exist; continuing)"
+if ! doctl registry create "$REGISTRY_NAME" --subscription-tier starter --region "$REGION"; then
+  EXISTING_REGISTRY=$(doctl registry get --format Name --no-header)
+  if [ "$EXISTING_REGISTRY" != "$REGISTRY_NAME" ]; then
+    echo "Registry creation failed and the account registry does not match '$REGISTRY_NAME'." >&2
+    exit 1
+  fi
+  echo "    Verified existing registry '$EXISTING_REGISTRY'."
+fi
 
 echo "==> Creating DOKS cluster '$CLUSTER_NAME' in $REGION (takes ~5-7 minutes)"
 doctl kubernetes cluster create "$CLUSTER_NAME" \
   --region "$REGION" \
+  --ha=true \
+  --version "$KUBERNETES_VERSION" \
   --node-pool "name=$NODE_POOL;size=$NODE_SIZE;count=$MIN_NODES;auto-scale=true;min-nodes=$MIN_NODES;max-nodes=$MAX_NODES" \
   --1-clicks metrics-server \
   --wait
@@ -37,3 +45,4 @@ for i in $(seq 1 30); do
   sleep 10
 done
 echo "metrics-server is not reporting yet. Check: kubectl get pods -A | grep metrics-server"
+exit 1

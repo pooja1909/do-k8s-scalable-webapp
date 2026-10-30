@@ -1,0 +1,108 @@
+{
+    "apiVersion": "autoscaling/v2",
+    "kind": "HorizontalPodAutoscaler",
+    "metadata": {
+        "annotations": {
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"autoscaling/v2\",\"kind\":\"HorizontalPodAutoscaler\",\"metadata\":{\"annotations\":{},\"name\":\"web-app\",\"namespace\":\"web-app\"},\"spec\":{\"behavior\":{\"scaleDown\":{\"policies\":[{\"periodSeconds\":30,\"type\":\"Percent\",\"value\":50}],\"stabilizationWindowSeconds\":60},\"scaleUp\":{\"policies\":[{\"periodSeconds\":30,\"type\":\"Percent\",\"value\":100}],\"stabilizationWindowSeconds\":0}},\"maxReplicas\":10,\"metrics\":[{\"resource\":{\"name\":\"cpu\",\"target\":{\"averageUtilization\":50,\"type\":\"Utilization\"}},\"type\":\"Resource\"}],\"minReplicas\":2,\"scaleTargetRef\":{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"name\":\"web-app\"}}}\n"
+        },
+        "creationTimestamp": "2026-10-29T18:23:50Z",
+        "generation": 1,
+        "name": "web-app",
+        "namespace": "web-app",
+        "resourceVersion": "595064",
+        "uid": "5f533dc6-8f64-4f6b-a1a3-380511f890ed"
+    },
+    "spec": {
+        "behavior": {
+            "scaleDown": {
+                "policies": [
+                    {
+                        "periodSeconds": 30,
+                        "type": "Percent",
+                        "value": 50
+                    }
+                ],
+                "selectPolicy": "Max",
+                "stabilizationWindowSeconds": 60
+            },
+            "scaleUp": {
+                "policies": [
+                    {
+                        "periodSeconds": 30,
+                        "type": "Percent",
+                        "value": 100
+                    }
+                ],
+                "selectPolicy": "Max",
+                "stabilizationWindowSeconds": 0
+            }
+        },
+        "maxReplicas": 10,
+        "metrics": [
+            {
+                "resource": {
+                    "name": "cpu",
+                    "target": {
+                        "averageUtilization": 50,
+                        "type": "Utilization"
+                    }
+                },
+                "type": "Resource"
+            }
+        ],
+        "minReplicas": 2,
+        "scaleTargetRef": {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "name": "web-app"
+        }
+    },
+    "status": {
+        "conditions": [
+            {
+                "lastTransitionTime": "2026-10-29T18:23:50Z",
+                "message": "recommended size matches current size",
+                "reason": "ReadyForNewScale",
+                "status": "True",
+                "type": "AbleToScale"
+            },
+            {
+                "lastTransitionTime": "2026-10-30T22:52:41Z",
+                "message": "the HPA was able to successfully calculate a replica count from cpu resource utilization (percentage of request)",
+                "reason": "ValidMetricFound",
+                "status": "True",
+                "type": "ScalingActive"
+            },
+            {
+                "lastTransitionTime": "2026-10-30T23:11:28Z",
+                "message": "the desired replica count is less than the minimum replica count",
+                "reason": "TooFewReplicas",
+                "status": "True",
+                "type": "ScalingLimited"
+            },
+            {
+                "lastTransitionTime": "2026-10-30T17:40:26Z",
+                "message": "the HPA controller did not scale the workload to zero",
+                "reason": "NotScaledToZero",
+                "status": "False",
+                "type": "ScaledToZero"
+            }
+        ],
+        "currentMetrics": [
+            {
+                "resource": {
+                    "current": {
+                        "averageUtilization": 1,
+                        "averageValue": "1m"
+                    },
+                    "name": "cpu"
+                },
+                "type": "Resource"
+            }
+        ],
+        "currentReplicas": 2,
+        "desiredReplicas": 2,
+        "lastScaleTime": "2026-10-30T23:11:28Z",
+        "observedGeneration": 1
+    }
+}

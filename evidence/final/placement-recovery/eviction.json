@@ -1,0 +1,13 @@
+{
+  "apiVersion": "policy/v1",
+  "kind": "Eviction",
+  "metadata": {
+    "name": "web-app-57db579ccc-n8fbs",
+    "namespace": "web-app"
+  },
+  "deleteOptions": {
+    "preconditions": {
+      "uid": "9432c58b-378d-4b3f-b296-33f8f8480610"
+    }
+  }
+}

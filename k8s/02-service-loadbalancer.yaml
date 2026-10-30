@@ -7,10 +7,9 @@ metadata:
   namespace: web-app
   annotations:
     service.beta.kubernetes.io/do-loadbalancer-name: "web-app-lb"
-    service.beta.kubernetes.io/do-loadbalancer-protocol: "http"
-    service.beta.kubernetes.io/do-loadbalancer-healthcheck-protocol: "http"
-    service.beta.kubernetes.io/do-loadbalancer-healthcheck-path: "/healthz"
-    service.beta.kubernetes.io/do-loadbalancer-healthcheck-check-interval-seconds: "5"
+    service.beta.kubernetes.io/do-loadbalancer-type: "REGIONAL_NETWORK"
+    service.beta.kubernetes.io/do-loadbalancer-protocol: "tcp"
+    # Retain DOKS-managed node health checks. App health is checked by pod probes.
 spec:
   type: LoadBalancer
   selector:

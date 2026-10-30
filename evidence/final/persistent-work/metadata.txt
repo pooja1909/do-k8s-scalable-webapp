@@ -1,0 +1,11 @@
+started_at=2026-10-30T22:55:35Z
+command=hey -z 60s -c 50 http://137.184.244.5/work?ms=50
+context=do-sfo3-web-app-cluster
+mode=work
+duration=60s
+concurrency=50
+recovery_seconds=120
+source_sha256=09c598aa05d87b0d1617b8875e224a24e8a8f403dec2554cfd486ae8a0abd88d  /Users/poojasingh/Downloads/do-k8s-scalable-webapp/scripts/../app/server.js
+Note: source hash is local; deployed image/digest are in deployment.json and pods.json.
+hey_exit=0
+finished_at=2026-10-30T22:59:46Z

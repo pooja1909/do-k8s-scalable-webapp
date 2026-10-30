@@ -1,0 +1,95 @@
+{
+  "light": {
+    "duration_seconds": 71.7956,
+    "requests_per_second": 201.1962,
+    "p50_ms": 168.6,
+    "p95_ms": 389.7,
+    "p99_ms": 507.29999999999995,
+    "statuses": {
+      "200": 14443
+    },
+    "request_errors": 2,
+    "attempts": 14445,
+    "start_replicas": 2,
+    "peak_sampled_replicas": 5,
+    "end_sampled_replicas": 2,
+    "node_counts": [
+      2
+    ],
+    "scaling_scope": "Before, during, after load, and recovery snapshots; peak may follow the load window."
+  },
+  "work": {
+    "duration_seconds": 62.9169,
+    "requests_per_second": 36.874,
+    "p50_ms": 797.2,
+    "p95_ms": 3206.0,
+    "p99_ms": 3687.9,
+    "statuses": {
+      "200": 2299
+    },
+    "request_errors": 21,
+    "attempts": 2320,
+    "start_replicas": 2,
+    "peak_sampled_replicas": 10,
+    "end_sampled_replicas": 2,
+    "node_counts": [
+      2
+    ],
+    "scaling_scope": "Before, during, after load, and recovery snapshots; peak may follow the load window."
+  },
+  "persistent-work": {
+    "duration_seconds": 77.1167,
+    "requests_per_second": 16.7279,
+    "p50_ms": 1939.8,
+    "p95_ms": 3327.6,
+    "p99_ms": 9126.0,
+    "statuses": {
+      "200": 1289
+    },
+    "request_errors": 1,
+    "attempts": 1290,
+    "start_replicas": 2,
+    "peak_sampled_replicas": 10,
+    "end_sampled_replicas": 2,
+    "node_counts": [
+      2
+    ],
+    "scaling_scope": "Before, during, after load, and recovery snapshots; peak may follow the load window."
+  },
+  "rollout": {
+    "samples": 485,
+    "http_200": 485,
+    "errors": 0,
+    "first_sample": "2026-10-30T22:51:47.100+00:00",
+    "last_sample": "2026-10-30T22:52:37.409+00:00",
+    "p95_ms": 107.443,
+    "max_ms": 168.152,
+    "recovery_seconds": 20.372,
+    "minimum_sampled_available": 2,
+    "sampled_desired_replicas": [
+      2
+    ],
+    "nodes": {
+      "web-pool-3enww0": 347,
+      "web-pool-3enb5k": 138
+    }
+  },
+  "pod-recovery": {
+    "samples": 361,
+    "http_200": 361,
+    "errors": 0,
+    "first_sample": "2026-10-30T22:52:58.957+00:00",
+    "last_sample": "2026-10-30T22:53:36.491+00:00",
+    "p95_ms": 111.131,
+    "max_ms": 120.814,
+    "recovery_seconds": 7.606,
+    "minimum_sampled_available": 1,
+    "sampled_desired_replicas": [
+      2
+    ],
+    "nodes": {
+      "web-pool-3enww0": 209,
+      "web-pool-3enb5k": 152
+    }
+  }
+}

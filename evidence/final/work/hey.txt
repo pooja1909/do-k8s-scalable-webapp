@@ -1,0 +1,45 @@
+
+Summary:
+  Total:	62.9169 secs
+  Slowest:	3.8631 secs
+  Fastest:	0.0928 secs
+  Average:	1.1485 secs
+  Requests/sec:	36.8740
+  
+
+Response time histogram:
+  0.093 [1]	|
+  0.470 [859]	|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.847 [321]	|■■■■■■■■■■■■■■■
+  1.224 [199]	|■■■■■■■■■
+  1.601 [245]	|■■■■■■■■■■■
+  1.978 [205]	|■■■■■■■■■■
+  2.355 [165]	|■■■■■■■■
+  2.732 [39]	|■■
+  3.109 [122]	|■■■■■■
+  3.486 [77]	|■■■■
+  3.863 [66]	|■■■
+
+
+Latency distribution:
+  10%% in 0.1442 secs
+  25%% in 0.3028 secs
+  50%% in 0.7972 secs
+  75%% in 1.8284 secs
+  90%% in 2.9173 secs
+  95%% in 3.2060 secs
+  99%% in 3.6879 secs
+
+Details (average, fastest, slowest):
+  DNS+dialup:	0.0266 secs, 0.0168 secs, 1.0211 secs
+  DNS-lookup:	0.0000 secs, 0.0000 secs, 0.0000 secs
+  req write:	0.0000 secs, 0.0000 secs, 0.0002 secs
+  resp wait:	1.1218 secs, 0.0740 secs, 3.8407 secs
+  resp read:	0.0001 secs, 0.0000 secs, 0.0002 secs
+
+Status code distribution:
+  [200]	2299 responses
+
+Error distribution:
+  [21]	Get "http://137.184.244.5/work?ms=50": context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+

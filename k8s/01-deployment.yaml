@@ -1,8 +1,8 @@
 # The web app itself. Key choices:
-#  - 2 replicas minimum, spread across nodes, so one node failure does not take the app down (reliability)
+#  - HPA manages replicas (minimum 2); topology spread guides placement at scheduling time
 #  - CPU/memory requests let the scheduler and the HPA make good decisions (performance + cost)
 #  - Readiness/liveness probes keep traffic away from pods that are not ready (reliability)
-#  - Rolling updates with maxUnavailable: 0 give zero-downtime deploys (reliability)
+#  - maxUnavailable: 0 preserves desired available capacity during normal rolling updates
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -11,7 +11,7 @@ metadata:
   labels:
     app: web-app
 spec:
-  replicas: 2                      # starting point; the HPA owns this number after deploy
+  # No replicas field: scripts/03-deploy.sh safely migrates its last-applied ownership to the HPA.
   revisionHistoryLimit: 5
   selector:
     matchLabels:
@@ -27,11 +27,11 @@ spec:
         app: web-app
     spec:
       terminationGracePeriodSeconds: 30
-      # Spread pods across nodes so a single node failure leaves the app serving.
+      # Placement is constrained at scheduling time; scale-down does not rebalance surviving pods.
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: DoNotSchedule   # hard rule: never put both copies on one server
+          whenUnsatisfiable: DoNotSchedule   # enforce skew across eligible nodes when scheduling
           labelSelector:
             matchLabels:
               app: web-app
@@ -51,7 +51,7 @@ spec:
               containerPort: 8080
           env:
             - name: APP_VERSION
-              value: "1.0.0"
+              value: "VERSION_PLACEHOLDER"
             # Downward API: lets the page show which pod and node served each request.
             - name: POD_NAME
               valueFrom:
@@ -68,8 +68,7 @@ spec:
             limits:
               cpu: 500m
               memory: 128Mi
-          # Probe timeouts are generous on purpose: under heavy CPU load the Node.js event loop is busy,
-          # and a 1-second default timeout made Kubernetes restart healthy-but-busy pods.
+          # Allow for the busy Node.js event loop during CPU-heavy requests.
           readinessProbe:
             httpGet:
               path: /readyz

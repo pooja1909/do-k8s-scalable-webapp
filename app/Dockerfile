@@ -14,7 +14,7 @@ USER node
 
 EXPOSE 8080
 
-# Docker-level health check (Kubernetes uses its own probes defined in k8s/deployment.yaml).
+# Docker-level health check (Kubernetes uses its own probes defined in k8s/01-deployment.yaml).
 HEALTHCHECK --interval=30s --timeout=3s CMD wget -qO- http://localhost:8080/healthz || exit 1
 
 CMD ["node", "server.js"]

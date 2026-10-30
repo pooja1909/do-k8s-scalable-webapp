@@ -1,0 +1,53 @@
+TAP version 13
+# Subtest: HTTP regressions and graceful shutdown
+    # Subtest: malformed raw request returns 400 without crashing
+    ok 1 - malformed raw request returns 400 without crashing
+      ---
+      duration_ms: 110.228208
+      type: 'test'
+      ...
+    # Subtest: invalid work durations are rejected
+    ok 2 - invalid work durations are rejected
+      ---
+      duration_ms: 81.907917
+      type: 'test'
+      ...
+    # Subtest: work default, zero, decimal and cap
+    ok 3 - work default, zero, decimal and cap
+      ---
+      duration_ms: 714.374417
+      type: 'test'
+      ...
+    # Subtest: normal endpoints and unknown route
+    ok 4 - normal endpoints and unknown route
+      ---
+      duration_ms: 36.00075
+      type: 'test'
+      ...
+    # Subtest: health checks stay responsive during concurrent CPU work
+    ok 5 - health checks stay responsive during concurrent CPU work
+      ---
+      duration_ms: 2058.762834
+      type: 'test'
+      ...
+    # Subtest: SIGTERM marks unready, then exits cleanly
+    ok 6 - SIGTERM marks unready, then exits cleanly
+      ---
+      duration_ms: 5058.599211
+      type: 'test'
+      ...
+    1..6
+ok 1 - HTTP regressions and graceful shutdown
+  ---
+  duration_ms: 8483.948796
+  type: 'test'
+  ...
+1..1
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 9040.874338

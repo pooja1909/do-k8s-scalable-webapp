@@ -1,0 +1,17 @@
+{
+  "samples": 349,
+  "http_200": 349,
+  "errors": 0,
+  "p95_ms": 50.859,
+  "max_ms": 76.698,
+  "pods": {
+    "web-app-57db579ccc-qbddh": 205,
+    "web-app-57db579ccc-n8fbs": 54,
+    "web-app-57db579ccc-z7n42": 90
+  },
+  "nodes": {
+    "web-pool-3enb5k": 259,
+    "web-pool-3enww0": 90
+  },
+  "note": "Short sequential sample; gaps between samples and longer outages outside this window are not measured."
+}

@@ -1,0 +1,122 @@
+{
+  "host": "137.184.244.5",
+  "expected_version": "1.0.2",
+  "checks": [
+    {
+      "at": "2026-10-30T22:52:58.316676+00:00",
+      "path": "/",
+      "expected_status": 200,
+      "status": 200,
+      "passed": true
+    },
+    {
+      "at": "2026-10-30T22:52:58.366294+00:00",
+      "path": "/healthz",
+      "expected_status": 200,
+      "status": 200,
+      "passed": true
+    },
+    {
+      "at": "2026-10-30T22:52:58.410049+00:00",
+      "path": "/readyz",
+      "expected_status": 200,
+      "status": 200,
+      "passed": true
+    },
+    {
+      "at": "2026-10-30T22:52:58.454221+00:00",
+      "path": "/api/info",
+      "expected_status": 200,
+      "status": 200,
+      "passed": true,
+      "info": {
+        "message": "Hello from DigitalOcean Kubernetes",
+        "pod": "web-app-57db579ccc-gklzn",
+        "node": "web-pool-3enb5k",
+        "version": "1.0.2",
+        "uptimeSeconds": 57,
+        "requestsServed": 155
+      }
+    },
+    {
+      "at": "2026-10-30T22:52:58.497247+00:00",
+      "path": "//",
+      "expected_status": 400,
+      "status": 400,
+      "passed": true
+    },
+    {
+      "at": "2026-10-30T22:52:58.539558+00:00",
+      "path": "/work?ms=",
+      "expected_status": 400,
+      "status": 400,
+      "passed": true
+    },
+    {
+      "at": "2026-10-30T22:52:58.585344+00:00",
+      "path": "/work?ms=NaN",
+      "expected_status": 400,
+      "status": 400,
+      "passed": true
+    },
+    {
+      "at": "2026-10-30T22:52:58.630519+00:00",
+      "path": "/work?ms=-1",
+      "expected_status": 400,
+      "status": 400,
+      "passed": true
+    },
+    {
+      "at": "2026-10-30T22:52:58.675687+00:00",
+      "path": "/work?ms=1e309",
+      "expected_status": 400,
+      "status": 400,
+      "passed": true
+    },
+    {
+      "at": "2026-10-30T22:52:58.719725+00:00",
+      "path": "/work?ms=0",
+      "expected_status": 200,
+      "status": 200,
+      "passed": true,
+      "work": {
+        "pod": "web-app-57db579ccc-gklzn",
+        "workedMs": 0
+      }
+    },
+    {
+      "at": "2026-10-30T22:52:59.762519+00:00",
+      "path": "/work?ms=10000",
+      "expected_status": 200,
+      "status": 200,
+      "passed": true,
+      "work": {
+        "pod": "web-app-57db579ccc-zvmfm",
+        "workedMs": 500
+      }
+    },
+    {
+      "at": "2026-10-30T22:52:59.805420+00:00",
+      "path": "/missing",
+      "expected_status": 404,
+      "status": 404,
+      "passed": true
+    },
+    {
+      "at": "2026-10-30T22:52:59.853936+00:00",
+      "path": "/api/info",
+      "expected_status": 200,
+      "status": 200,
+      "passed": true,
+      "info": {
+        "message": "Hello from DigitalOcean Kubernetes",
+        "pod": "web-app-57db579ccc-gklzn",
+        "node": "web-pool-3enb5k",
+        "version": "1.0.2",
+        "uptimeSeconds": 59,
+        "requestsServed": 162
+      }
+    }
+  ],
+  "passed": true
+}

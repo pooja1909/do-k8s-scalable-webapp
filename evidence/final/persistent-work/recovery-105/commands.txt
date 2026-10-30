@@ -1,0 +1,28 @@
+2026-10-30T22:59:26Z kubectl config current-context 
+exit=0
+2026-10-30T22:59:26Z kube version -o json 
+exit=0
+2026-10-30T22:59:26Z doctl version 
+exit=0
+2026-10-30T22:59:26Z kube -n web-app get deployment web-app -o json 
+exit=0
+2026-10-30T22:59:26Z kube -n web-app get hpa web-app -o json 
+exit=0
+2026-10-30T22:59:27Z kube -n web-app get pods -o json 
+exit=0
+2026-10-30T22:59:27Z kube get nodes -o json 
+exit=0
+2026-10-30T22:59:27Z kube -n web-app get service web-app -o json 
+exit=0
+2026-10-30T22:59:27Z kube -n web-app get endpointslices -l kubernetes.io/service-name=web-app -o json 
+exit=0
+2026-10-30T22:59:27Z kube -n web-app get events -o json 
+exit=0
+2026-10-30T22:59:27Z kube -n web-app top pods 
+exit=0
+2026-10-30T22:59:27Z kube top nodes 
+exit=0
+2026-10-30T22:59:28Z doctl kubernetes cluster get web-app-cluster -o json 
+exit=0
+2026-10-30T22:59:28Z doctl compute load-balancer get 07e0ac18-4fbf-4d0a-b2b8-6030a88ee39a -o json 
+exit=0

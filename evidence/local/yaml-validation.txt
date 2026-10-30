@@ -1,0 +1,6 @@
+k8s/00-namespace.yaml: Namespace web-app
+k8s/load-generator.yaml: Deployment load-generator
+k8s/03-hpa.yaml: HorizontalPodAutoscaler web-app
+k8s/01-deployment.yaml: Deployment web-app
+k8s/04-pdb.yaml: PodDisruptionBudget web-app
+k8s/02-service-loadbalancer.yaml: Service web-app

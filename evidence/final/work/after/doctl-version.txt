@@ -1,0 +1,2 @@
+doctl version 2.1.0-release
+API endpoint: https://api.digitalocean.com/

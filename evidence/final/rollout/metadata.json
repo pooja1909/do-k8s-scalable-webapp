@@ -1,0 +1,19 @@
+{
+  "action": "rollout",
+  "context": "do-sfo3-web-app-cluster",
+  "url": "http://137.184.244.5/api/info",
+  "pod": null,
+  "placement": {
+    "web-app-587c579867-dfz44": "web-pool-3enww0",
+    "web-app-587c579867-hwqr9": "web-pool-3enww0"
+  },
+  "started_at": "2026-10-30T22:51:44.356+00:00",
+  "interval_seconds": 0.1,
+  "request_timeout_seconds": 3,
+  "source_sha256": "09c598aa05d87b0d1617b8875e224a24e8a8f403dec2554cfd486ae8a0abd88d",
+  "scope": "Rolling deployment",
+  "action_started_at": "2026-10-30T22:51:57.102+00:00",
+  "recovered_at": "2026-10-30T22:52:17.474+00:00",
+  "finished_at": "2026-10-30T22:52:37.479+00:00",
+  "action_succeeded": true
+}

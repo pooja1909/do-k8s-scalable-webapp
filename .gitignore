@@ -2,3 +2,7 @@ node_modules/
 .DS_Store
 *.log
 .env
+tmp/
+__pycache__/
+*.pyc
+output/*.zip

@@ -1,0 +1,12 @@
+{
+  "pages": 17,
+  "section_pages": {
+    "Setup and Operations Guide": 3,
+    "Cost and Performance Analysis": 6,
+    "Reliability Validation": 9,
+    "Quarterly Business Review": 10,
+    "Evidence Index": 12
+  },
+  "qbr_pages": 2,
+  "pdf": "output/pdf/DOKS_TAM_Case_Study.pdf"
+}

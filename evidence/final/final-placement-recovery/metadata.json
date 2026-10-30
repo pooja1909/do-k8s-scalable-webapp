@@ -1,0 +1,19 @@
+{
+  "action": "pod-recovery",
+  "context": "do-sfo3-web-app-cluster",
+  "url": "http://137.184.244.5/api/info",
+  "pod": "web-app-57db579ccc-542rj",
+  "placement": {
+    "web-app-57db579ccc-542rj": "web-pool-3enww0",
+    "web-app-57db579ccc-7qmtc": "web-pool-3enww0"
+  },
+  "started_at": "2026-10-30T23:14:28.022+00:00",
+  "interval_seconds": 0.1,
+  "request_timeout_seconds": 3,
+  "source_sha256": "09c598aa05d87b0d1617b8875e224a24e8a8f403dec2554cfd486ae8a0abd88d",
+  "scope": "One voluntary pod eviction through policy/v1; not a node-failure test",
+  "action_started_at": "2026-10-30T23:14:40.646+00:00",
+  "recovered_at": "2026-10-30T23:14:47.966+00:00",
+  "finished_at": "2026-10-30T23:15:07.972+00:00",
+  "action_succeeded": true
+}

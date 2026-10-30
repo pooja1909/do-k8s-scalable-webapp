@@ -1,0 +1,216 @@
+{
+    "apiVersion": "v1",
+    "items": [
+        {
+            "addressType": "IPv4",
+            "apiVersion": "discovery.k8s.io/v1",
+            "endpoints": [
+                {
+                    "addresses": [
+                        "10.125.0.193"
+                    ],
+                    "conditions": {
+                        "ready": true,
+                        "serving": true,
+                        "terminating": false
+                    },
+                    "nodeName": "web-pool-3enww0",
+                    "targetRef": {
+                        "kind": "Pod",
+                        "name": "web-app-57db579ccc-zvmfm",
+                        "namespace": "web-app",
+                        "uid": "4ec9219b-5d6a-43e0-ae47-d15760a1678e"
+                    }
+                },
+                {
+                    "addresses": [
+                        "10.125.1.90"
+                    ],
+                    "conditions": {
+                        "ready": true,
+                        "serving": true,
+                        "terminating": false
+                    },
+                    "nodeName": "web-pool-3enb5k",
+                    "targetRef": {
+                        "kind": "Pod",
+                        "name": "web-app-57db579ccc-qbddh",
+                        "namespace": "web-app",
+                        "uid": "7c8ecf7d-4c33-42d2-a3e3-d0156059df67"
+                    }
+                },
+                {
+                    "addresses": [
+                        "10.125.1.74"
+                    ],
+                    "conditions": {
+                        "ready": false,
+                        "serving": true,
+                        "terminating": true
+                    },
+                    "nodeName": "web-pool-3enb5k",
+                    "targetRef": {
+                        "kind": "Pod",
+                        "name": "web-app-57db579ccc-4c662",
+                        "namespace": "web-app",
+                        "uid": "063830d8-1981-4abc-a318-c09fdf254ad0"
+                    }
+                },
+                {
+                    "addresses": [
+                        "10.125.0.177"
+                    ],
+                    "conditions": {
+                        "ready": true,
+                        "serving": true,
+                        "terminating": false
+                    },
+                    "nodeName": "web-pool-3enww0",
+                    "targetRef": {
+                        "kind": "Pod",
+                        "name": "web-app-57db579ccc-fbr4f",
+                        "namespace": "web-app",
+                        "uid": "f741aaf3-3e46-4a2b-b85b-72330321a4e6"
+                    }
+                },
+                {
+                    "addresses": [
+                        "10.125.0.194"
+                    ],
+                    "conditions": {
+                        "ready": false,
+                        "serving": true,
+                        "terminating": true
+                    },
+                    "nodeName": "web-pool-3enww0",
+                    "targetRef": {
+                        "kind": "Pod",
+                        "name": "web-app-57db579ccc-hpkzd",
+                        "namespace": "web-app",
+                        "uid": "c4f2c151-4310-429f-84b5-0f5fb11aa0cd"
+                    }
+                },
+                {
+                    "addresses": [
+                        "10.125.0.196"
+                    ],
+                    "conditions": {
+                        "ready": true,
+                        "serving": true,
+                        "terminating": false
+                    },
+                    "nodeName": "web-pool-3enww0",
+                    "targetRef": {
+                        "kind": "Pod",
+                        "name": "web-app-57db579ccc-mvfnw",
+                        "namespace": "web-app",
+                        "uid": "ab45268f-2b1a-48b9-910b-452b4537da93"
+                    }
+                },
+                {
+                    "addresses": [
+                        "10.125.1.29"
+                    ],
+                    "conditions": {
+                        "ready": true,
+                        "serving": true,
+                        "terminating": false
+                    },
+                    "nodeName": "web-pool-3enb5k",
+                    "targetRef": {
+                        "kind": "Pod",
+                        "name": "web-app-57db579ccc-n8fbs",
+                        "namespace": "web-app",
+                        "uid": "9432c58b-378d-4b3f-b296-33f8f8480610"
+                    }
+                },
+                {
+                    "addresses": [
+                        "10.125.1.6"
+                    ],
+                    "conditions": {
+                        "ready": false,
+                        "serving": true,
+                        "terminating": true
+                    },
+                    "nodeName": "web-pool-3enb5k",
+                    "targetRef": {
+                        "kind": "Pod",
+                        "name": "web-app-57db579ccc-nrtrl",
+                        "namespace": "web-app",
+                        "uid": "9e060397-2498-45ae-90d5-20fe44683ceb"
+                    }
+                },
+                {
+                    "addresses": [
+                        "10.125.1.46"
+                    ],
+                    "conditions": {
+                        "ready": false,
+                        "serving": true,
+                        "terminating": true
+                    },
+                    "nodeName": "web-pool-3enb5k",
+                    "targetRef": {
+                        "kind": "Pod",
+                        "name": "web-app-57db579ccc-nkksq",
+                        "namespace": "web-app",
+                        "uid": "6cc9e651-738d-4690-8cdc-2bdf8fec52ed"
+                    }
+                },
+                {
+                    "addresses": [
+                        "10.125.0.189"
+                    ],
+                    "conditions": {
+                        "ready": false,
+                        "serving": true,
+                        "terminating": true
+                    },
+                    "nodeName": "web-pool-3enww0",
+                    "targetRef": {
+                        "kind": "Pod",
+                        "name": "web-app-57db579ccc-ljp5p",
+                        "namespace": "web-app",
+                        "uid": "a30dfeb3-1aa7-45ab-9a42-935400c0d6d0"
+                    }
+                }
+            ],
+            "kind": "EndpointSlice",
+            "metadata": {
+                "creationTimestamp": "2026-10-29T18:23:50Z",
+                "generateName": "web-app-",
+                "generation": 378,
+                "labels": {
+                    "endpointslice.kubernetes.io/managed-by": "endpointslice-controller.k8s.io",
+                    "kubernetes.io/service-name": "web-app"
+                },
+                "name": "web-app-ncxnf",
+                "namespace": "web-app",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "Service",
+                        "name": "web-app",
+                        "uid": "59a975a7-94d8-49cd-9369-9e19524e4669"
+                    }
+                ],
+                "resourceVersion": "589585",
+                "uid": "fc0c2ca2-f751-44d3-9224-0b36a111ab55"
+            },
+            "ports": [
+                {
+                    "name": "http",
+                    "port": 8080,
+                    "protocol": "TCP"
+                }
+            ]
+        }
+    ],
+    "kind": "List",
+    "metadata": {
+        "resourceVersion": ""
+    }
+}

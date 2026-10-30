@@ -1,0 +1,4 @@
+2026-10-30T22:20:17.296Z cluster-ha.png: native Chrome screenshot; HA Enabled and Kubernetes version
+2026-10-30T22:20:28.912Z node-autoscaling.png: native Chrome screenshot; 2-4 nodes, Autoscaling On
+2026-10-30T22:46:35.542Z load-balancer-overview.png: native Chrome screenshot; Regional Network type, $15/month
+2026-10-30T22:46:46.343Z load-balancer-health-checks.png: native Chrome screenshot; HTTP 10256 /healthz every 3 seconds

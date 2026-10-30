@@ -10,22 +10,30 @@
 
 const http = require('http');
 const os = require('os');
+const { setImmediate: yieldToIO } = require('node:timers/promises');
 
 const PORT = Number(process.env.PORT || 8080);
 const POD_NAME = process.env.POD_NAME || os.hostname();
 const NODE_NAME = process.env.NODE_NAME || 'local';
-const APP_VERSION = process.env.APP_VERSION || '1.0.0';
+const APP_VERSION = process.env.APP_VERSION || require('./package.json').version;
 const STARTED_AT = new Date();
 
 let ready = true;
 let requestCount = 0;
 
-// Busy-loop for `ms` milliseconds to simulate CPU-heavy work (e.g. rendering, image resize).
-function burnCpu(ms) {
-  const end = Date.now() + ms;
+// Simulate CPU work in short chunks, allowing probes and other requests to run.
+// A request's elapsed latency also includes time waiting for other CPU work.
+async function burnCpu(ms) {
+  let remaining = ms;
   let x = 0;
-  while (Date.now() < end) {
-    x += Math.sqrt(Math.random() * 1000);
+  while (remaining > 0) {
+    const chunk = Math.min(remaining, 5);
+    const end = performance.now() + chunk;
+    while (performance.now() < end) {
+      x += Math.sqrt(Math.random() * 1000);
+    }
+    remaining -= chunk;
+    if (remaining > 0) await yieldToIO();
   }
   return x;
 }
@@ -72,8 +80,14 @@ function page(i) {
 </html>`;
 }
 
-const server = http.createServer((req, res) => {
-  const url = new URL(req.url, 'http://localhost');
+const server = http.createServer(async (req, res) => {
+  let url;
+  try {
+    url = new URL(req.url, 'http://localhost');
+  } catch {
+    res.writeHead(400, { 'Content-Type': 'text/plain' });
+    return res.end('invalid request URL');
+  }
   requestCount += 1;
 
   if (url.pathname === '/healthz') {
@@ -93,8 +107,14 @@ const server = http.createServer((req, res) => {
 
   if (url.pathname === '/work') {
     // Cap the work per request so a single call can't hang a pod.
-    const ms = Math.min(Number(url.searchParams.get('ms') || 50), 500);
-    burnCpu(ms);
+    const rawMs = url.searchParams.get('ms');
+    const requestedMs = rawMs === null ? 50 : Number(rawMs);
+    if ((rawMs !== null && rawMs.trim() === '') || !Number.isFinite(requestedMs) || requestedMs < 0) {
+      res.writeHead(400, { 'Content-Type': 'text/plain' });
+      return res.end('ms must be a finite, nonnegative number');
+    }
+    const ms = Math.min(requestedMs, 500);
+    await burnCpu(ms);
     res.writeHead(200, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
     return res.end(JSON.stringify({ pod: POD_NAME, workedMs: ms }));
   }
@@ -109,7 +129,7 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`web-app ${APP_VERSION} listening on :${PORT} (pod=${POD_NAME}, node=${NODE_NAME})`);
+  console.log(`web-app ${APP_VERSION} listening on :${server.address().port} (pod=${POD_NAME}, node=${NODE_NAME})`);
 });
 
 // Graceful shutdown: stop taking new traffic, finish in-flight requests, then exit.

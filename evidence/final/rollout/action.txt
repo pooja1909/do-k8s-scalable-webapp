@@ -1,0 +1,17 @@
+==> Applying manifests (image: registry.digitalocean.com/pooja-doks-demo-2026/web-app:1.0.2)
+namespace/web-app unchanged
+horizontalpodautoscaler.autoscaling/web-app unchanged
+deployment.apps/web-app configured
+service/web-app unchanged
+poddisruptionbudget.policy/web-app configured
+==> Waiting for pods to be ready
+Waiting for deployment "web-app" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "web-app" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "web-app" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "web-app" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "web-app" rollout to finish: 1 old replicas are pending termination...
+deployment "web-app" successfully rolled out
+==> Waiting for the DigitalOcean Load Balancer to get a public IP (2-4 minutes)
+
+App is live:  http://137.184.244.5
+JSON info:    http://137.184.244.5/api/info

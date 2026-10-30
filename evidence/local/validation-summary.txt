@@ -1,0 +1,6 @@
+2026-10-30T22:56:16.799014+00:00
+9 shell files: bash -n passed
+7 Python files: syntax passed
+6 YAML files parsed; selectors, named ports, HPA target, replica ownership, probes, PDB and rollout strategy passed
+Pushed image source hashes match app/server.js and app/package.json; release 1.0.2
+2026-10-30T23:16:43.946713+00:00 Final scripts: shell/Python syntax passed. Final live baseline: two ready pods across two ready workers, no restarts, release 1.0.2; HPA 2/2; managed LB checks verified.

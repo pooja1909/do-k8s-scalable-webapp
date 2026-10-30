@@ -1,0 +1,16 @@
+▶ HTTP regressions and graceful shutdown
+  ✔ malformed raw request returns 400 without crashing (8.614083ms)
+  ✔ invalid work durations are rejected (5.277375ms)
+  ✔ work default, zero, decimal and cap (556.177584ms)
+  ✔ normal endpoints and unknown route (1.453125ms)
+  ✔ health checks stay responsive during concurrent CPU work (2005.678416ms)
+  ✔ SIGTERM marks unready, then exits cleanly (5005.021667ms)
+✔ HTTP regressions and graceful shutdown (7608.951958ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7656.487458

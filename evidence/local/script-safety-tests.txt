@@ -1,0 +1,12 @@
+test_cancelled_confirmation_does_not_delete (__main__.SafetyTests) ... ok
+test_confirmed_cluster_preserves_registry_and_associated_resources (__main__.SafetyTests) ... ok
+test_default_is_read_only (__main__.SafetyTests) ... ok
+test_failed_namespace_deletion_stops_cluster_deletion (__main__.SafetyTests) ... ok
+test_replica_migration_preserves_other_historical_fields (__main__.SafetyTests) ... ok
+test_selected_registry_is_not_force_deleted (__main__.SafetyTests) ... ok
+test_wrong_context_endpoint_and_registry_refuse_before_mutation (__main__.SafetyTests) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 3.323s
+
+OK

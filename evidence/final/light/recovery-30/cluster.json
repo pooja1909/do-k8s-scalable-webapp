@@ -1,0 +1,99 @@
+[
+  {
+    "id": "75213823-0ad9-4e84-b0b8-26cfc5720c00",
+    "name": "web-app-cluster",
+    "region": "sfo3",
+    "version": "1.37.0-do.2",
+    "cluster_subnet": "10.125.0.0/16",
+    "service_subnet": "10.124.32.0/19",
+    "endpoint": "https://75213823-0ad9-4e84-b0b8-26cfc5720c00.k8s.ondigitalocean.com",
+    "tags": [
+      "k8s",
+      "k8s:75213823-0ad9-4e84-b0b8-26cfc5720c00"
+    ],
+    "vpc_uuid": "d6217101-a8a9-4d69-b67c-292b1375f009",
+    "worker_subnet_uuid": "00eb59e2-cd72-4aa3-8357-194a6876cc5b",
+    "ha": true,
+    "node_pools": [
+      {
+        "id": "51f708cd-0d33-4263-af67-c3c2f10f53a0",
+        "name": "web-pool",
+        "size": "s-2vcpu-4gb",
+        "count": 2,
+        "tags": [
+          "k8s",
+          "k8s:75213823-0ad9-4e84-b0b8-26cfc5720c00",
+          "k8s:worker"
+        ],
+        "auto_scale": true,
+        "min_nodes": 2,
+        "max_nodes": 4,
+        "nodes": [
+          {
+            "id": "02e8a0c7-8fc5-4ce6-8e2e-1d4ce9fbabcc",
+            "name": "web-pool-3enb5k",
+            "status": {
+              "state": "running"
+            },
+            "droplet_id": "613950598",
+            "created_at": "2026-10-29T18:11:10Z",
+            "updated_at": "2026-10-29T18:19:04Z"
+          },
+          {
+            "id": "61586a1a-5cea-4143-9753-7f542f5ac9d6",
+            "name": "web-pool-3enww0",
+            "status": {
+              "state": "running"
+            },
+            "droplet_id": "613950599",
+            "created_at": "2026-10-29T18:17:04Z",
+            "updated_at": "2026-10-29T18:19:04Z"
+          }
+        ]
+      }
+    ],
+    "maintenance_policy": {
+      "start_time": "00:00",
+      "duration": "4h0m0s",
+      "day": "any"
+    },
+    "surge_upgrade": true,
+    "registry_enabled": true,
+    "routing_agent": {
+      "enabled": false
+    },
+    "amd_gpu_device_plugin": {
+      "enabled": false
+    },
+    "amd_gpu_device_metrics_exporter_plugin": {
+      "enabled": false
+    },
+    "nvidia_gpu_device_plugin": {
+      "enabled": false
+    },
+    "nvidia_gpu_dra_driver": {
+      "enabled": false
+    },
+    "amd_gpu_dra_driver": {
+      "enabled": false
+    },
+    "rdma_shared_dev_plugin": {
+      "enabled": false
+    },
+    "coredns_autoscaler": {
+      "enabled": true
+    },
+    "p2p_oci_registry_plugin": {
+      "enabled": false
+    },
+    "nfs_csi_plugin": {
+      "enabled": false
+    },
+    "gpu_operator_ready": false,
+    "status": {
+      "state": "running"
+    },
+    "created_at": "2026-10-29T18:11:10Z",
+    "updated_at": "2026-10-30T00:02:13Z"
+  }
+]

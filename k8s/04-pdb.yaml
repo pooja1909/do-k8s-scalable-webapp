@@ -1,4 +1,5 @@
-# PodDisruptionBudget: during node upgrades or node scale-down, keep at least one pod serving.
+# PodDisruptionBudget: constrain voluntary evictions (e.g. node drains) to minAvailable: 1.
+# Does not prevent involuntary node failures or control Deployment scale-down / rolling updates.
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:

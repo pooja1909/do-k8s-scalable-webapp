@@ -1,0 +1,3 @@
+NAME                       CPU(cores)   MEMORY(bytes)   
+web-app-57db579ccc-qbddh   1m           17Mi            
+web-app-57db579ccc-z7n42   1m           10Mi            

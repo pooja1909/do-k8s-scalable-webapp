@@ -1,69 +1,50 @@
-# Quarterly Business Review: Web Platform on DigitalOcean Kubernetes
+# Quarterly Business Review
 
-**Prepared by:** Pooja Singh, Technical Account Manager  ·  **Audience:** CTO, VP Engineering, platform team
+**Web platform on DigitalOcean Kubernetes**
 
-## 1. Summary
+**Prepared by:** Pooja Singh, Technical Account Manager
 
-The web app now runs on DigitalOcean Kubernetes, behind a DigitalOcean Load Balancer, and scales automatically in both
-directions. It meets all four goals: it absorbs traffic growth without manual work, keeps response times steady under
-load, survives a node failure without downtime, and costs about **$113/month in a typical month**, including a high-availability
-control plane. Sizing for peak without autoscaling would cost $148/month.
+**Audience:** CTO, VP Engineering, platform team | **Review:** October 30, 2026
 
-| Goal | Status | Evidence |
-| --- | --- | --- |
-| Scalability | Met | HPA scaled pods from 2 to 10 (the cap) under load and back to 2 when idle; Cluster Autoscaler can add nodes up to 4. |
-| Performance | Met | p95 latency 26 ms at 2,311 requests/sec through the Load Balancer. |
-| Reliability | Met | 2+ pods on separate nodes, health-checked Load Balancer, zero-downtime rolling updates, 0% errors during scale-up; Load Balancer health checks 100%, 0 s downtime. |
-| Cost | Met | $100/month baseline (HA control plane included), ≈ $113 typical, $148 hard ceiling. |
+## Customer outcome and current infrastructure
 
-## 2. Current infrastructure and performance
+The deployed Node.js application demonstrates public load distribution, CPU-driven pod autoscaling, a monitored rolling deployment, and recovery from a voluntary pod eviction. The environment uses DOKS in **sfo3**, an HA control plane, two **2-vCPU / 4-GiB** Basic workers, and a **regional network Load Balancer**. HPA bounds are **2-10 pods**; the node pool is configured for **2-4 workers**. Release **1.0.2** is live and its source hashes match the submitted code.
 
-- **Cluster:** DOKS in `sfo3`, high-availability control plane (99.95% SLA), metrics-server add-on.
-- **Nodes:** one autoscaling pool of `s-2vcpu-4gb` Basic Droplets, minimum 2, maximum 4.
-- **App:** Node.js container, 2–10 pods; each pod requests 100m CPU and 64 MiB of memory. HPA target is 50% CPU.
-- **Traffic:** a DigitalOcean Load Balancer with an HTTP health check on `/healthz`; requests spread evenly across pods.
-- **Measured performance:** normal page 2,311 requests/sec, p50 21 ms, p95 26 ms, 0 errors (138,757 requests). CPU-heavy page
-  p50 1.24 s, p95 1.93 s; errors fell from 1.5% to 0% after making the health checks tolerant of busy pods. Pods scaled
-  2 → 10 under load and back to 2 about 1–2 minutes after load stopped.
+| Customer goal | Measured position |
+| --- | --- |
+| Scalability | Both endpoint tests began with two ready replicas and an idle HPA. Light scaled 2 to 5 to 2; CPU scaled 2 to 10 to 2, including recovery. Workers stayed at two; node scale-out was not exercised. |
+| Performance | Light endpoint: p95 389.7 ms at 201.20 requests/sec, with two timeouts (0.014%). CPU-heavy endpoint: p95 3,206.0 ms at 36.87 requests/sec. Both used 50 concurrent connections for 60 seconds. The CPU test had 21 timeouts in 2,320 attempts (0.91%). |
+| Reliability | Rollout: 485/485 sampled HTTP 200 responses. Pod recovery: 361/361 HTTP 200 responses; two ready replicas observed after 7.61 seconds. Final baseline has one ready replica per worker. |
+| Cost | Modeled $103 baseline, $115.86 with two extra workers for an assumed 6 hours/day, and $151 for four continuously running workers. These are infrastructure projections. |
 
-## 3. Recommendations
+## Business interpretation
 
-**Next 30 days (before launch)**
+The additional keep-alive CPU stress test recorded one timeout in 1,290 attempts (0.078%), with p95 3.33 seconds. Pods stayed ready in sampled observations. Representative connection patterns and capacity need validation before production.
 
-1. **Right-size CPU requests.** Under heavy load each pod used up to 500m CPU but reserved only 100m, so the Cluster
-   Autoscaler (which scales on reservations) never added a node and the cluster saturated. Raising the request to match
-   real usage lets it add nodes before CPU runs out.
-2. **Add HTTPS** with a free Let's Encrypt certificate on the Load Balancer, and redirect HTTP to HTTPS.
-3. **Automate deploys** with a GitHub Actions pipeline: build, push to DOCR, apply to DOKS. This removes manual steps
-   and makes rollbacks one click.
-4. **Set alerts:** node CPU and memory alerts in DigitalOcean Monitoring, plus a billing alert at $90/month.
+Light-response p95 was below 0.4 seconds; the observed timeouts require follow-up before production. The CPU-heavy endpoint deliberately consumes CPU while yielding to I/O between short chunks, making capacity and tail latency visible. At ten pods, requests total one CPU while limits total five CPUs across four nominal worker vCPUs. High utilization can coexist with sufficient scheduling reservations. Cluster Autoscaler needs unschedulable pods; resource requests and HPA targets should be tuned together against representative traffic.
 
-**Next quarter (as users grow)**
+The network Load Balancer costs **$15/month**. The illustrative daily-peak scenario saves **$35.14 (23.3%)** against static four-worker sizing; the assumed duty cycle is not measured billing history. HA costs $40/month, and its 99.95% SLA covers the control plane. Short reliability checks establish observed outcomes within their sampling windows, not a long-term application uptime percentage.
 
-5. **Rebalance pods after scale-down.** Spread rules apply only when pods are placed, so after a spike the remaining
-   pods can share one node. Add the Kubernetes Descheduler, or keep a minimum of 3 replicas.
-6. **Serve static assets from Spaces + CDN** to take load off the pods and cut latency for users far from `sfo3`.
-7. **Scale on traffic, not only CPU.** Add a requests-per-second metric (for example with KEDA) so pods are added before
-   CPU climbs.
-8. **Move stateful data to DigitalOcean Managed Databases** rather than in-cluster, for backups and failover.
+<!-- PAGEBREAK -->
 
-## 4. Risks and mitigations
+## Prioritized customer action plan
 
-| Risk | Impact | Mitigation |
-| --- | --- | --- |
-| New nodes take 3–5 minutes to join | Latency rises during a sudden spike if the nodes are already full | Keep the 2-node minimum with headroom; schedule a higher minimum ahead of known launches or campaigns. |
-| Single region (`sfo3`) | A regional outage takes the app down | Document a restore runbook now; add a second region when revenue justifies it. |
-| Spend grows with traffic | Surprise bills | `maxReplicas` and `max-nodes` caps, billing alerts, monthly cost review in this QBR. |
-| Account Droplet limit (25 by default) | Cluster Autoscaler can't add nodes | Request a limit increase before growth. |
-| metrics-server stops reporting | HPA can't scale | Alert on HPA `<unknown>` targets; metrics-server is a managed add-on. |
-| No HTTPS yet | Data in transit not encrypted; browsers flag the site | Add the Let's Encrypt certificate (recommendation 2). |
-| Load Balancer capacity | Throughput limit at high traffic | Monitor LB connections; add Load Balancer nodes as traffic grows. |
+| When / owner | Action and acceptance evidence |
+| --- | --- |
+| Before launch / platform + TAM | Agree p95, error-rate, and recovery objectives. Test representative traffic and sustained CPU load; tune CPU requests and HPA together. Record throttling, pending reasons, capacity arrival, and cost impact. |
+| Before launch / platform | Exercise abrupt worker loss and rollback with timed HTTP monitoring. Confirm placement and headroom after recovery; compare measured recovery time with the agreed objective. |
+| Within 2 weeks / TAM + platform | Configure latency, error, readiness, HPA-metrics, and placement alerts. Agree the account budget and configure a $120 billing alert if appropriate. |
+| Within 30 days / platform | Add HTTPS with TLS termination at an ingress/app compatible with the network LB. Add CI/CD with immutable images, automated checks, and tested rollback. |
+| Next quarter / CTO + platform | Review two weeks of workload and billing data. Evaluate dedicated CPU, request-rate scaling, CDN for static assets, and Managed Databases when persistent data is introduced. |
 
-## 5. Next steps
+## Risks and mitigations
 
-| Action | Owner | Due |
-| --- | --- | --- |
-| Approve HTTPS and CPU right-sizing | Customer CTO | Before launch |
-| Build the GitHub Actions deploy pipeline | Customer platform team, with TAM support | 30 days |
-| Set up monitoring and billing alerts | TAM + customer platform team | 2 weeks |
-| Review two weeks of production data and right-size | TAM | Next monthly check-in |
+| Risk | Mitigation / decision |
+| --- | --- |
+| Uneven pod placement after scale-down | Inspect placement; use monitored PDB-respecting pod replacement when needed. Evaluate automated rebalancing with an eviction policy. |
+| CPU saturation and slow capacity arrival | Maintain measured headroom and tune requests/HPA together. Lengthen and validate the 60-second demo scale-down window for production traffic. |
+| Single region and untested abrupt worker loss | Define recovery objectives and test the failure runbook. Evaluate a second region when business requirements justify it. |
+| Spending above the modeled subtotal | Review transfer, LB size, storage, and other account services. Capacity bounds and billing alerts do not cap spending. |
+| Overinterpreting short reliability tests | PDB covers voluntary evictions. Require sustained monitoring and abrupt-failure tests before adopting an application availability target. |
+
+**Next customer check-in:** confirm performance and recovery objectives, account budget, and action owners. Review raw evidence together and prioritize production work by customer impact. HTTPS, CI/CD, CDN, and persistent storage are planned capabilities.
