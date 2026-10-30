@@ -26,9 +26,9 @@ Horizontal Pod Autoscaling for pods and Cluster Autoscaling for nodes. It was bu
 | Goal | How |
 | --- | --- |
 | Scalability | HPA adds pods when CPU passes 50% (2 → 10 pods). The Cluster Autoscaler adds nodes when pods don't fit (2 → 4 nodes). |
-| Performance | Right-sized CPU requests; the HPA adds pods as soon as it measures a spike (no scale-up wait window); traffic is spread across all pods. |
+| Performance | Small CPU requests pack pods densely (to be raised from production data, see QBR); the HPA adds pods as soon as it measures a spike (no scale-up wait window); traffic is spread across all pods. |
 | Reliability | At least 2 pods on separate nodes, Load Balancer and readiness health checks, graceful shutdown, zero-downtime rolling updates, and a PodDisruptionBudget. |
-| Cost optimization | Starts small (2 Basic nodes) and only pays for extra capacity while it's needed. Max replicas and max nodes cap spend. Free control plane and free registry tier. |
+| Cost optimization | Starts small (2 Basic nodes) and only pays for extra capacity while it's needed. Max replicas and max nodes cap spend. Free registry tier; HA control plane ($40/month) for a 99.95% SLA. |
 
 ## Prerequisites
 

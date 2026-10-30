@@ -35,6 +35,10 @@ spec:
           labelSelector:
             matchLabels:
               app: web-app
+          # Count only pods from the current version, so a rolling update doesn't
+          # balance new pods against old ones that are about to be deleted.
+          matchLabelKeys:
+            - pod-template-hash
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000

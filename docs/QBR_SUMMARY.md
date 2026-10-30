@@ -6,31 +6,33 @@
 
 The web app now runs on DigitalOcean Kubernetes, behind a DigitalOcean Load Balancer, and scales automatically in both
 directions. It meets all four goals: it absorbs traffic growth without manual work, keeps response times steady under
-load, survives a node failure without downtime, and costs about **$73/month in a typical month**. Sizing for peak
-without autoscaling would cost $108/month.
+load, survives a node failure without downtime, and costs about **$113/month in a typical month**, including a high-availability
+control plane. Sizing for peak without autoscaling would cost $148/month.
 
 | Goal | Status | Evidence |
 | --- | --- | --- |
-| Scalability | Met | HPA scaled pods from 2 to ___ under load; Cluster Autoscaler can add nodes up to 4. |
-| Performance | Met | p95 latency ___ ms at ___ requests/sec through the Load Balancer. |
-| Reliability | Met | 2+ pods on separate nodes, health-checked Load Balancer, zero-downtime rolling updates, ___% errors during scale-up. |
-| Cost | Met | $60/month baseline, ≈ $73 typical, $108 hard ceiling. |
+| Scalability | Met | HPA scaled pods from 2 to 10 (the cap) under load and back to 2 when idle; Cluster Autoscaler can add nodes up to 4. |
+| Performance | Met | p95 latency 26 ms at 2,311 requests/sec through the Load Balancer. |
+| Reliability | Met | 2+ pods on separate nodes, health-checked Load Balancer, zero-downtime rolling updates, 0% errors during scale-up; Load Balancer health checks 100%, 0 s downtime. |
+| Cost | Met | $100/month baseline (HA control plane included), ≈ $113 typical, $148 hard ceiling. |
 
 ## 2. Current infrastructure and performance
 
-- **Cluster:** DOKS in `sfo3`, standard (free) control plane, metrics-server add-on.
+- **Cluster:** DOKS in `sfo3`, high-availability control plane (99.95% SLA), metrics-server add-on.
 - **Nodes:** one autoscaling pool of `s-2vcpu-4gb` Basic Droplets, minimum 2, maximum 4.
 - **App:** Node.js container, 2–10 pods; each pod requests 100m CPU and 64 MiB of memory. HPA target is 50% CPU.
 - **Traffic:** a DigitalOcean Load Balancer with an HTTP health check on `/healthz`; requests spread evenly across pods.
-- **Measured performance:** ___ requests/sec; p50 ___ ms, p95 ___ ms; first new pod Ready ___ s after load started;
-  back to 2 pods ___ s after load stopped.
+- **Measured performance:** normal page 2,311 requests/sec, p50 21 ms, p95 26 ms, 0 errors (138,757 requests). CPU-heavy page
+  p50 1.24 s, p95 1.93 s; errors fell from 1.5% to 0% after making the health checks tolerant of busy pods. Pods scaled
+  2 → 10 under load and back to 2 about 1–2 minutes after load stopped.
 
 ## 3. Recommendations
 
 **Next 30 days (before launch)**
 
-1. **Turn on the HA control plane** (+$40/month). It adds a 99.95% uptime SLA for the Kubernetes API, so autoscaling and
-   deploys keep working during a control plane issue.
+1. **Right-size CPU requests.** Under heavy load each pod used up to 500m CPU but reserved only 100m, so the Cluster
+   Autoscaler (which scales on reservations) never added a node and the cluster saturated. Raising the request to match
+   real usage lets it add nodes before CPU runs out.
 2. **Add HTTPS** with a free Let's Encrypt certificate on the Load Balancer, and redirect HTTP to HTTPS.
 3. **Automate deploys** with a GitHub Actions pipeline: build, push to DOCR, apply to DOKS. This removes manual steps
    and makes rollbacks one click.
@@ -38,8 +40,8 @@ without autoscaling would cost $108/month.
 
 **Next quarter (as users grow)**
 
-5. **Right-size from real data.** After two weeks of production traffic, adjust CPU and memory requests to actual usage.
-   Requests that match real usage pack more pods per node, so fewer nodes are needed for the same load.
+5. **Rebalance pods after scale-down.** Spread rules apply only when pods are placed, so after a spike the remaining
+   pods can share one node. Add the Kubernetes Descheduler, or keep a minimum of 3 replicas.
 6. **Serve static assets from Spaces + CDN** to take load off the pods and cut latency for users far from `sfo3`.
 7. **Scale on traffic, not only CPU.** Add a requests-per-second metric (for example with KEDA) so pods are added before
    CPU climbs.
@@ -61,7 +63,7 @@ without autoscaling would cost $108/month.
 
 | Action | Owner | Due |
 | --- | --- | --- |
-| Approve the HA control plane and HTTPS | Customer CTO | Before launch |
+| Approve HTTPS and CPU right-sizing | Customer CTO | Before launch |
 | Build the GitHub Actions deploy pipeline | Customer platform team, with TAM support | 30 days |
 | Set up monitoring and billing alerts | TAM + customer platform team | 2 weeks |
 | Review two weeks of production data and right-size | TAM | Next monthly check-in |
