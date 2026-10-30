@@ -1,0 +1,89 @@
+# The web app itself. Key choices:
+#  - 2 replicas minimum, spread across nodes, so one node failure does not take the app down (reliability)
+#  - CPU/memory requests let the scheduler and the HPA make good decisions (performance + cost)
+#  - Readiness/liveness probes keep traffic away from pods that are not ready (reliability)
+#  - Rolling updates with maxUnavailable: 0 give zero-downtime deploys (reliability)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-app
+  namespace: web-app
+  labels:
+    app: web-app
+spec:
+  replicas: 2                      # starting point; the HPA owns this number after deploy
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels:
+      app: web-app
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1                  # add one new pod at a time
+      maxUnavailable: 0            # never drop below the current capacity during a deploy
+  template:
+    metadata:
+      labels:
+        app: web-app
+    spec:
+      terminationGracePeriodSeconds: 30
+      # Spread pods across nodes so a single node failure leaves the app serving.
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule   # hard rule: never put both copies on one server
+          labelSelector:
+            matchLabels:
+              app: web-app
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+      containers:
+        - name: web-app
+          image: IMAGE_PLACEHOLDER   # replaced by scripts/03-deploy.sh with your DOCR image
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: APP_VERSION
+              value: "1.0.0"
+            # Downward API: lets the page show which pod and node served each request.
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          resources:
+            requests:
+              cpu: 100m              # HPA targets are a percentage of this request
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 128Mi
+          # Probe timeouts are generous on purpose: under heavy CPU load the Node.js event loop is busy,
+          # and a 1-second default timeout made Kubernetes restart healthy-but-busy pods.
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+            initialDelaySeconds: 2
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6        # restart only after ~60s of no response
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]

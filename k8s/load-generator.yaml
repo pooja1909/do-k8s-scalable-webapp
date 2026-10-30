@@ -1,0 +1,35 @@
+# Demo-only traffic generator. It runs inside the cluster and calls the CPU-heavy /work endpoint
+# in a tight loop, which pushes CPU up and makes the HPA add pods.
+#   Start:   kubectl apply -f k8s/load-generator.yaml
+#   More:    kubectl -n web-app scale deployment/load-generator --replicas=4
+#   Stop:    kubectl delete -f k8s/load-generator.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: load-generator
+  namespace: web-app
+  labels:
+    app: load-generator
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: load-generator
+  template:
+    metadata:
+      labels:
+        app: load-generator
+    spec:
+      containers:
+        - name: load
+          image: busybox:1.36
+          command: ["/bin/sh", "-c"]
+          args:
+            - while true; do wget -q -O- "http://web-app.web-app.svc.cluster.local/work?ms=100" > /dev/null; done
+          resources:
+            requests:
+              cpu: 50m
+              memory: 16Mi
+            limits:
+              cpu: 200m
+              memory: 32Mi

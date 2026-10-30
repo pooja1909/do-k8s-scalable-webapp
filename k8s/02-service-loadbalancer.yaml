@@ -1,0 +1,21 @@
+# A Service of type LoadBalancer makes DOKS create a DigitalOcean Load Balancer automatically.
+# The Load Balancer sends traffic to the worker nodes; Kubernetes then spreads it across the app pods.
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-app
+  namespace: web-app
+  annotations:
+    service.beta.kubernetes.io/do-loadbalancer-name: "web-app-lb"
+    service.beta.kubernetes.io/do-loadbalancer-protocol: "http"
+    service.beta.kubernetes.io/do-loadbalancer-healthcheck-protocol: "http"
+    service.beta.kubernetes.io/do-loadbalancer-healthcheck-path: "/healthz"
+    service.beta.kubernetes.io/do-loadbalancer-healthcheck-check-interval-seconds: "5"
+spec:
+  type: LoadBalancer
+  selector:
+    app: web-app
+  ports:
+    - name: http
+      port: 80
+      targetPort: http

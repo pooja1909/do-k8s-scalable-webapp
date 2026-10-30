@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1b2a41"/>
+    </marker>
+    <marker id="arrb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0069ff"/>
+    </marker>
+    <marker id="arrg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5a6472"/>
+    </marker>
+  </defs>
+  <rect width="1600" height="900" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="40" y="52" font-size="30" font-weight="700" fill="#1b2a41">Scalable web app on DigitalOcean Kubernetes (DOKS)</text>
+  <text x="40" y="84" font-size="18" fill="#5a6472">Region sfo3 · Load Balancer → node pool (2–4 nodes) → app pods (2–10) · autoscaling on CPU</text>
+
+  <!-- Users -->
+  <rect x="40" y="380" width="170" height="110" rx="14" fill="#eef3fb" stroke="#1b2a41" stroke-width="2"/>
+  <text x="125" y="425" font-size="20" font-weight="700" text-anchor="middle" fill="#1b2a41">Users</text>
+  <text x="125" y="452" font-size="15" text-anchor="middle" fill="#5a6472">Browser / API</text>
+  <text x="125" y="472" font-size="15" text-anchor="middle" fill="#5a6472">HTTP :80</text>
+
+  <!-- Load balancer -->
+  <rect x="270" y="360" width="220" height="150" rx="14" fill="#0069ff"/>
+  <text x="380" y="400" font-size="20" font-weight="700" text-anchor="middle" fill="#ffffff">DigitalOcean</text>
+  <text x="380" y="424" font-size="20" font-weight="700" text-anchor="middle" fill="#ffffff">Load Balancer</text>
+  <text x="380" y="454" font-size="15" text-anchor="middle" fill="#dbe7ff">Public IP · round robin</text>
+  <text x="380" y="476" font-size="15" text-anchor="middle" fill="#dbe7ff">Health check: /healthz</text>
+  <text x="380" y="498" font-size="15" text-anchor="middle" fill="#dbe7ff">$12/month</text>
+  <line x1="210" y1="435" x2="266" y2="435" stroke="#1b2a41" stroke-width="3" marker-end="url(#arr)"/>
+
+  <!-- Cluster boundary -->
+  <rect x="550" y="120" width="1010" height="545" rx="18" fill="#f7f9fc" stroke="#0069ff" stroke-width="2.5" stroke-dasharray="10 6"/>
+  <text x="575" y="156" font-size="20" font-weight="700" fill="#0069ff">DOKS cluster  ·  VPC  ·  sfo3</text>
+
+  <!-- Control plane -->
+  <rect x="575" y="175" width="960" height="120" rx="12" fill="#ffffff" stroke="#9fb3d1" stroke-width="2"/>
+  <text x="595" y="205" font-size="17" font-weight="700" fill="#1b2a41">Scaling brain: managed control plane (free; HA $40/month) + metrics-server add-on</text>
+  <rect x="595" y="222" width="215" height="56" rx="8" fill="#eef3fb"/>
+  <text x="702" y="246" font-size="15" font-weight="700" text-anchor="middle" fill="#1b2a41">metrics-server</text>
+  <text x="702" y="266" font-size="13" text-anchor="middle" fill="#5a6472">pod CPU / memory</text>
+  <rect x="830" y="222" width="290" height="56" rx="8" fill="#e6f4ea"/>
+  <text x="975" y="246" font-size="15" font-weight="700" text-anchor="middle" fill="#1b2a41">Horizontal Pod Autoscaler</text>
+  <text x="975" y="266" font-size="13" text-anchor="middle" fill="#5a6472">2–10 pods · target 50% CPU</text>
+  <rect x="1140" y="222" width="375" height="56" rx="8" fill="#fff4e0"/>
+  <text x="1327" y="246" font-size="15" font-weight="700" text-anchor="middle" fill="#1b2a41">Cluster Autoscaler</text>
+  <text x="1327" y="266" font-size="13" text-anchor="middle" fill="#5a6472">adds nodes when pods don't fit · 2–4 nodes</text>
+  <line x1="810" y1="250" x2="826" y2="250" stroke="#5a6472" stroke-width="2" marker-end="url(#arrg)"/>
+
+  <!-- Node pool -->
+  <text x="1535" y="635" font-size="17" font-weight="700" text-anchor="end" fill="#1b2a41">Node pool "web-pool" · s-2vcpu-4gb ($24/month each) · 2–4 nodes</text>
+
+  <!-- Node 1 -->
+  <rect x="575" y="345" width="225" height="250" rx="12" fill="#ffffff" stroke="#1b2a41" stroke-width="2"/>
+  <text x="687" y="375" font-size="16" font-weight="700" text-anchor="middle" fill="#1b2a41">Node 1</text>
+  <rect x="600" y="392" width="175" height="42" rx="8" fill="#0069ff"/><text x="687" y="419" font-size="14" text-anchor="middle" fill="#fff">web-app pod</text>
+  <rect x="600" y="444" width="175" height="42" rx="8" fill="#0069ff"/><text x="687" y="471" font-size="14" text-anchor="middle" fill="#fff">web-app pod</text>
+  <rect x="600" y="496" width="175" height="42" rx="8" fill="#ffffff" stroke="#0069ff" stroke-dasharray="5 4" stroke-width="2"/><text x="687" y="523" font-size="14" text-anchor="middle" fill="#0069ff">+ pods under load</text>
+  <text x="687" y="572" font-size="12" text-anchor="middle" fill="#5a6472">kube-proxy spreads traffic</text>
+
+  <!-- Node 2 -->
+  <rect x="820" y="345" width="225" height="250" rx="12" fill="#ffffff" stroke="#1b2a41" stroke-width="2"/>
+  <text x="932" y="375" font-size="16" font-weight="700" text-anchor="middle" fill="#1b2a41">Node 2</text>
+  <rect x="845" y="392" width="175" height="42" rx="8" fill="#0069ff"/><text x="932" y="419" font-size="14" text-anchor="middle" fill="#fff">web-app pod</text>
+  <rect x="845" y="444" width="175" height="42" rx="8" fill="#0069ff"/><text x="932" y="471" font-size="14" text-anchor="middle" fill="#fff">web-app pod</text>
+  <rect x="845" y="496" width="175" height="42" rx="8" fill="#ffffff" stroke="#0069ff" stroke-dasharray="5 4" stroke-width="2"/><text x="932" y="523" font-size="14" text-anchor="middle" fill="#0069ff">+ pods under load</text>
+  <text x="932" y="572" font-size="12" text-anchor="middle" fill="#5a6472">pods spread across nodes</text>
+
+  <!-- Nodes 3-4 (autoscaled) -->
+  <rect x="1065" y="345" width="225" height="250" rx="12" fill="#fffaf0" stroke="#e8a33d" stroke-width="2" stroke-dasharray="8 5"/>
+  <text x="1177" y="375" font-size="16" font-weight="700" text-anchor="middle" fill="#b06d00">Nodes 3–4</text>
+  <text x="1177" y="400" font-size="13" text-anchor="middle" fill="#b06d00">added only at peak,</text>
+  <text x="1177" y="420" font-size="13" text-anchor="middle" fill="#b06d00">removed when idle</text>
+  <rect x="1090" y="444" width="175" height="42" rx="8" fill="#ffffff" stroke="#0069ff" stroke-dasharray="5 4" stroke-width="2"/><text x="1177" y="471" font-size="14" text-anchor="middle" fill="#0069ff">overflow pods</text>
+
+  <!-- Reliability box -->
+  <rect x="1310" y="345" width="225" height="250" rx="12" fill="#eef3fb" stroke="#9fb3d1" stroke-width="2"/>
+  <text x="1422" y="375" font-size="16" font-weight="700" text-anchor="middle" fill="#1b2a41">Reliability</text>
+  <text x="1330" y="405" font-size="13" fill="#1b2a41">• ≥2 pods on separate nodes</text>
+  <text x="1330" y="430" font-size="13" fill="#1b2a41">• Readiness + liveness probes</text>
+  <text x="1330" y="455" font-size="13" fill="#1b2a41">• Rolling update, 0 unavailable</text>
+  <text x="1330" y="480" font-size="13" fill="#1b2a41">• PodDisruptionBudget (min 1)</text>
+  <text x="1330" y="505" font-size="13" fill="#1b2a41">• Graceful shutdown on SIGTERM</text>
+  <text x="1330" y="530" font-size="13" fill="#1b2a41">• Non-root, read-only container</text>
+  <text x="1330" y="555" font-size="13" fill="#1b2a41">• Max pods/nodes cap spend</text>
+
+  <!-- LB to nodes -->
+  <path d="M490 420 C 530 420, 540 470, 571 470" fill="none" stroke="#0069ff" stroke-width="3" marker-end="url(#arrb)"/>
+  <text x="300" y="545" font-size="14" fill="#0069ff">distributes to all nodes</text>
+
+  <!-- HPA to pods -->
+  <line x1="975" y1="278" x2="975" y2="340" stroke="#2e7d32" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrg)"/>
+  <text x="985" y="318" font-size="13" fill="#2e7d32">scales pods</text>
+  <line x1="1327" y1="278" x2="1210" y2="340" stroke="#b06d00" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrg)"/>
+  <text x="1270" y="318" font-size="13" fill="#b06d00">scales nodes</text>
+
+  <!-- Registry + developer -->
+  <rect x="520" y="770" width="320" height="80" rx="10" fill="#ffffff" stroke="#1b2a41" stroke-width="2"/>
+  <text x="680" y="802" font-size="16" font-weight="700" text-anchor="middle" fill="#1b2a41">Container Registry (DOCR)</text>
+  <text x="680" y="827" font-size="13" text-anchor="middle" fill="#5a6472">web-app:1.0.0 · Starter tier, free</text>
+  <line x1="760" y1="770" x2="840" y2="602" stroke="#5a6472" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrg)"/>
+  <text x="806" y="700" font-size="13" fill="#5a6472">nodes pull image</text>
+
+  <rect x="40" y="760" width="420" height="100" rx="12" fill="#f7f9fc" stroke="#9fb3d1" stroke-width="2"/>
+  <text x="60" y="792" font-size="17" font-weight="700" fill="#1b2a41">Developer / CI</text>
+  <text x="60" y="818" font-size="14" fill="#5a6472">docker buildx --platform linux/amd64 --push</text>
+  <text x="60" y="840" font-size="14" fill="#5a6472">kubectl apply -f k8s/   (doctl for infra)</text>
+  <line x1="460" y1="810" x2="516" y2="810" stroke="#5a6472" stroke-width="2" marker-end="url(#arrg)"/>
+  <text x="462" y="798" font-size="12" fill="#5a6472">push</text>
+  <path d="M460 830 C 520 830, 520 830, 540 830" fill="none" stroke="none"/>
+
+  <!-- Cost strip -->
+  <rect x="900" y="760" width="660" height="100" rx="12" fill="#e6f4ea" stroke="#2e7d32" stroke-width="2"/>
+  <text x="920" y="792" font-size="17" font-weight="700" fill="#1b2a41">Monthly cost (list price)</text>
+  <text x="920" y="818" font-size="15" fill="#1b2a41">Baseline: 2 nodes $48 + LB $12 + registry $0 + control plane $0 = $60</text>
+  <text x="920" y="842" font-size="15" fill="#1b2a41">Ceiling: 4 nodes $96 + LB $12 = $108 · Peak capacity only billed while used</text>
+</svg>

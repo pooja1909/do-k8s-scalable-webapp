@@ -1,0 +1,36 @@
+# Horizontal Pod Autoscaler: adds pods when average CPU passes 50% of the request, removes them when load drops.
+# Requires metrics-server (installed as a DOKS 1-Click add-on in scripts/01-create-infra.sh).
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: web-app
+  namespace: web-app
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: web-app
+  minReplicas: 2                   # never fewer than 2, for availability
+  maxReplicas: 10                  # cost guardrail: caps spend during a traffic spike
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 0      # react to spikes right away
+      policies:
+        - type: Percent
+          value: 100                     # at most double the pods every 30s
+          periodSeconds: 30
+    scaleDown:
+      # 60s keeps the live demo short. In production, use 300s (the Kubernetes default)
+      # so a brief dip in traffic doesn't remove pods that are needed again a minute later.
+      stabilizationWindowSeconds: 60
+      policies:
+        - type: Percent
+          value: 50
+          periodSeconds: 30

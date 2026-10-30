@@ -1,0 +1,10 @@
+{
+  "name": "doks-scalable-web-app",
+  "version": "1.0.0",
+  "description": "Simple Node.js web app for demonstrating load balancing and autoscaling on DigitalOcean Kubernetes",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "license": "MIT"
+}
