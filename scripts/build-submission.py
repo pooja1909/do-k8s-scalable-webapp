@@ -98,7 +98,7 @@ def decorate(canvas,doc):
     canvas.saveState(); canvas.setStrokeColor(BLUE); canvas.setLineWidth(2); canvas.line(42,h-31,w-42,h-31)
     canvas.setFont('Helvetica',8); canvas.setFillColor(MUTED)
     canvas.drawString(42,h-22,'DIGITALOCEAN KUBERNETES  /  TAM CASE STUDY')
-    canvas.drawString(42,24,'Pooja Singh  |  October 30, 2026  |  Demo evidence and customer handoff')
+    canvas.drawString(42,24,'Pooja Singh  |  November 2, 2026  |  Demo evidence and customer handoff')
     canvas.drawRightString(w-42,24,str(doc.page)); canvas.restoreState()
 
 doc=Report(str(OUT),pagesize=letter,leftMargin=54,rightMargin=54,topMargin=51,bottomMargin=46,
@@ -110,7 +110,7 @@ for name,size in [('portrait',letter),('landscape',landscape(letter))]:
 story=[Spacer(1,50),p('Scalable web app<br/>on DigitalOcean Kubernetes','TitleMain')]
 # rich() escapes HTML, so the title above is intentionally replaced by an explicit Paragraph.
 story[-1]=Paragraph('Scalable web app<br/>on DigitalOcean Kubernetes',styles['TitleMain'])
-story += [p('Technical Account Manager case study','H2x'),p('Pooja Singh | October 30, 2026'),Spacer(1,20),p('A small Node.js application with load distribution, pod autoscaling, a managed HA control plane, and a measured customer handoff.'),Spacer(1,14)]
+story += [p('Senior Technical Account Manager case study','H2x'),p('Pooja Singh | November 2, 2026'),Spacer(1,20),p('A small Node.js application with load distribution, pod autoscaling, a managed HA control plane, and a measured customer handoff.'),Spacer(1,14)]
 story += table([['Deliverable','Included'],['Architecture','Illustrative scaled state; health-check and availability boundaries.'],['Setup and operations','Deployment, safe HPA migration, verification, troubleshooting, teardown.'],['Cost and performance','Explicit pricing assumptions and raw-backed endpoint benchmarks.'],['Quarterly business review','Two-page customer review with risks, owners, and next actions.'],['Evidence','Raw API/benchmark outputs, versions, tests, and dashboard screenshots.']])
 story += [p('Source repository','H2x'),p('[github.com/pooja1909/do-k8s-scalable-webapp](https://github.com/pooja1909/do-k8s-scalable-webapp)'),p('Deployed release: 1.0.2. Public demo: http://137.184.244.5. The evidence includes endpoint benchmarks, a monitored rolling deployment, and controlled voluntary pod recovery.','Smallx')]
 story += [NextPageTemplate('landscape'),PageBreak(),Image(str(ROOT/'docs/architecture.png'),width=684,height=444.6),NextPageTemplate('portrait'),PageBreak()]

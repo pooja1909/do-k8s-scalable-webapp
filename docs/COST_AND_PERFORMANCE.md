@@ -1,6 +1,6 @@
 # Cost and Performance Analysis
 
-**Review date: October 30, 2026.** Prices are USD list-price inputs; projections exclude tax, discounts, bandwidth overages, and additional services. Performance observations are short demo tests, not a production SLO or availability measurement.
+**Review date: November 2, 2026.** Prices are USD list-price inputs; projections exclude tax, discounts, bandwidth overages, and additional services. Performance observations are short demo tests, not a production SLO or availability measurement.
 
 ## 1. Infrastructure pricing
 
@@ -25,7 +25,7 @@ HA was verified by API and screenshot. Its [99.95% SLA](https://www.digitalocean
 
 The illustrative daily-peak scenario saves **$35.14, or 23.3%**, against $151 static peak sizing. No billing history or observed node scale-out supports this duty cycle: it is a planning assumption. Bundled worker plans have a monthly cap and per-second billing; the hourly equivalent is used for transparent estimation. Reconcile actual usage and rounding against the invoice.
 
-The subtotal is a hard spending ceiling. Pod and node limits bound configured capacity; bandwidth, additional LB nodes, storage, taxes, other services, and other account resources can increase the bill. Recommend a **$120 billing alert** aligned with the agreed account budget. An alert does not stop spending.
+The subtotal is **not a hard spending ceiling**. Pod and node limits bound configured capacity; bandwidth, additional LB nodes, storage, taxes, other services, and other account resources can increase the bill. Recommend a **$120 billing alert** aligned with the agreed account budget. An alert does not stop spending.
 
 <!-- PAGEBREAK -->
 
@@ -64,4 +64,4 @@ Right-size requests and retune HPA **together**, then rerun a controlled test fr
 
 Two smaller nodes offer more placement options than a single larger node, but failover depends on placement and available capacity. The final baseline has one ready app pod on each worker; placement must be checked after every scale-down. Topology spread applies at scheduling time; increasing the minimum to three replicas does not guarantee balanced survivors after scale-down. A PDB constrains voluntary evictions and cannot prevent involuntary node loss.
 
-Keep the Basic worker plan for the demo and evaluate sustained CPU needs with representative traffic before choosing dedicated CPU. Keep HTTPS, deployment automation, CDN, and managed databases on the prioritized roadmap. Use representative traffic, recovery exercises, and billing history to validate production performance, availability, and savings.
+Keep the Basic worker plan for the demo and evaluate sustained CPU needs with representative traffic before choosing dedicated CPU. Require HTTPS and essential monitoring before production launch; keep deployment automation, CDN, and managed databases on the prioritized roadmap. Use representative traffic, recovery exercises, and billing history to validate production performance, availability, and savings.

@@ -2,9 +2,9 @@
 
 **Web platform on DigitalOcean Kubernetes**
 
-**Prepared by:** Pooja Singh, Technical Account Manager
+**Prepared by:** Pooja Singh, Senior Technical Account Manager
 
-**Audience:** CTO, VP Engineering, platform team | **Review:** October 30, 2026
+**Audience:** CTO, VP Engineering, platform team | **Review:** November 2, 2026
 
 ## Customer outcome and current infrastructure
 
@@ -19,9 +19,9 @@ The deployed Node.js application demonstrates public load distribution, CPU-driv
 
 ## Business interpretation
 
-The additional keep-alive CPU stress test recorded one timeout in 1,290 attempts (0.078%), with p95 3.33 seconds. Pods stayed ready in sampled observations. Representative connection patterns and capacity need validation before production.
+The light endpoint's p95 was below 0.4 seconds, but timeouts occurred in both endpoint tests. CPU-heavy requests reached p95 3.21 seconds with a 0.91% timeout rate, indicating a risk of slow or failed customer requests as demand grows. Automatic pod scaling responded to demand, but adding worker capacity remains untested. Before production launch, tune capacity and autoscaling together and validate agreed response-time and error targets with representative customer traffic.
 
-Light-response p95 was below 0.4 seconds; the observed timeouts require follow-up before production. The CPU-heavy endpoint deliberately consumes CPU while yielding to I/O between short chunks, making capacity and tail latency visible. At ten pods, requests total one CPU while limits total five CPUs across four nominal worker vCPUs. High utilization can coexist with sufficient scheduling reservations. Cluster Autoscaler needs unschedulable pods; resource requests and HPA targets should be tuned together against representative traffic.
+The additional test with persistent connections recorded one timeout in 1,290 attempts (0.078%), with p95 3.33 seconds. Pods stayed ready in sampled observations, but readiness alone does not establish acceptable customer response times. Validate the connection patterns customers will actually use.
 
 The network Load Balancer costs **$15/month**. The illustrative daily-peak scenario saves **$35.14 (23.3%)** against static four-worker sizing; the assumed duty cycle is not measured billing history. HA costs $40/month, and its 99.95% SLA covers the control plane. Short reliability checks establish observed outcomes within their sampling windows, not a long-term application uptime percentage.
 
@@ -31,10 +31,11 @@ The network Load Balancer costs **$15/month**. The illustrative daily-peak scena
 
 | When / owner | Action and acceptance evidence |
 | --- | --- |
-| Before launch / platform + TAM | Agree p95, error-rate, and recovery objectives. Test representative traffic and sustained CPU load; tune CPU requests and HPA together. Record throttling, pending reasons, capacity arrival, and cost impact. |
-| Before launch / platform | Exercise abrupt worker loss and rollback with timed HTTP monitoring. Confirm placement and headroom after recovery; compare measured recovery time with the agreed objective. |
-| Within 2 weeks / TAM + platform | Configure latency, error, readiness, HPA-metrics, and placement alerts. Agree the account budget and configure a $120 billing alert if appropriate. |
-| Within 30 days / platform | Add HTTPS with TLS termination at an ingress/app compatible with the network LB. Add CI/CD with immutable images, automated checks, and tested rollback. |
+| Before production launch / platform + TAM | Agree response-time, error-rate, and recovery objectives. Test representative traffic and sustained CPU load; tune capacity and autoscaling together. Demonstrate that capacity arrives in time to meet the agreed targets and record the cost impact. |
+| Before production launch / platform | Exercise abrupt worker loss and rollback with timed HTTP monitoring. Confirm placement and headroom after recovery; compare measured recovery time with the agreed objective. |
+| Before production launch / TAM + platform | Configure and test latency, error, readiness, HPA-metrics, and placement alerts. Confirm alert owners and response procedures. Agree the account budget and configure a $120 billing alert if appropriate. |
+| Before production launch / platform | Enable HTTPS with TLS termination at an ingress/app compatible with the network LB. Verify the certificate and redirect public HTTP traffic to HTTPS. |
+| Within 30 days / platform | Add CI/CD with immutable images, automated checks, and tested rollback. |
 | Next quarter / CTO + platform | Review two weeks of workload and billing data. Evaluate dedicated CPU, request-rate scaling, CDN for static assets, and Managed Databases when persistent data is introduced. |
 
 ## Risks and mitigations
@@ -47,4 +48,4 @@ The network Load Balancer costs **$15/month**. The illustrative daily-peak scena
 | Spending above the modeled subtotal | Review transfer, LB size, storage, and other account services. Capacity bounds and billing alerts do not cap spending. |
 | Overinterpreting short reliability tests | PDB covers voluntary evictions. Require sustained monitoring and abrupt-failure tests before adopting an application availability target. |
 
-**Next customer check-in:** confirm performance and recovery objectives, account budget, and action owners. Review raw evidence together and prioritize production work by customer impact. HTTPS, CI/CD, CDN, and persistent storage are planned capabilities.
+**Next customer check-in:** confirm performance and recovery objectives, account budget, and action owners. Review raw evidence together and prioritize work by customer impact. HTTPS and essential monitoring are production launch prerequisites. CI/CD, CDN, and persistent storage remain planned capabilities.
